@@ -1,0 +1,22 @@
+{% extends 'shared_schedule/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Event Details</title>
+{% endblock %}
+
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Event Details</h1>
+            <p>Event Title: {{ Event_details.title }}</p>
+            <p>Room: {{ Event_details.resourceId }}</p>
+            <p>Event Description: {{ Event_details.description }}</p>
+            <p>From Date: {{ Event_details.start }}</p>
+            <p>To Date: {{ Event_details.end }}</p>
+            <a class="btn btn-warning" href="{% url 'EventUpdate' pk=Event_details.pk %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'EventDelete' pk=Event_details.pk %}">Delete</a>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends 'shared_schedule/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% block title %}
+<title>Update Event</title>
+{% endblock %}
+
+
+{% block extrahead %}
+  {{ form.media }}
+{% endblock extrahead %}
+  
+
+{% block content %}
+  <div class="container">
+    <h1>Fill in the form below:</h1>
+    <form method="post">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% buttons %}
+      <button type="submit" class="btn btn-primary">
+        Update
+      </button>
+      {% endbuttons %}
+    </form>
+  </div>
+{% endblock content %}

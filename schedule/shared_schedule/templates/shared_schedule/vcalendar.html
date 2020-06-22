@@ -1,0 +1,113 @@
+{% extends 'shared_schedule/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>GW 28F Room Schedule</title>
+{% endblock %}
+
+{% block extrahead %}
+    <link href="{% static 'packages/core/main.css' %}" rel='stylesheet' />
+    <link href="{% static 'packages/daygrid/main.css' %}" rel='stylesheet' />
+    <link href="{% static 'packages/timegrid/main.css' %}" rel='stylesheet' />
+    <script src="{% static 'packages/core/main.js' %}"></script>
+    <script src="{% static 'packages/interaction/main.js' %}"></script>
+    <script src="{% static 'packages/daygrid/main.js' %}"></script>
+    <script src="{% static 'packages/timegrid/main.js' %}"></script>
+    <script src="{% static 'packages-premium/resource-common/main.js' %}"></script>
+    <script src="{% static 'packages-premium/resource-daygrid/main.js' %}"></script>
+    <script src="{% static 'packages-premium/resource-timegrid/main.js' %}"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                plugins: ['interaction', 'resourceDayGrid', 'resourceTimeGrid'],
+                defaultView: 'resourceTimeGridDay',
+                minTime: '08:00',
+                maxTime: '22:00',
+                selectable: true,
+                contentHeight: 'auto',
+                eventLimit: true, // allow "more" link when too many events
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'resourceTimeGridDay,resourceTimeGridTwoDay,timeGridWeek,dayGridMonth'
+                },
+                views: {
+                    resourceTimeGridTwoDay: {
+                        type: 'resourceTimeGrid',
+                        duration: { days: 2 },
+                        buttonText: '2 days',
+                    }
+                },
+
+                //// uncomment this line to hide the all-day slot
+                //allDaySlot: false,
+
+                resources: [
+                    {% for resource in resources %}
+                        {
+                    id: '{{ resource.id }}',
+                    title: ' {{ resource.title }}',
+                },
+                {% endfor %}
+                    ],
+            events: [
+            {% for event in events %}
+        {
+            id: '{{ event.id }}',
+                resourceId: '{{ event.resourceId.pk }}',
+                    color: '{{ event.resourceId.eventColor }}',
+                        title: '{{ event.title|safe }}',
+                            description: '{{ event.description|safe }}',
+                                start: '{{ event.start|date:"c" }}',
+                                    end: '{{ event.end|date:"c" }}',
+                                        url: '{% url "EventDetail" pk=event.pk %}',
+                    },
+        {% endfor %}
+                    ],
+
+        select: function (arg) {
+            console.log(
+                'select',
+                arg.startStr,
+                arg.endStr,
+                arg.resource ? arg.resource.id : '(no resource)'
+            );
+        },
+        dateClick: function (arg) {
+            console.log(
+                'dateClick',
+                arg.date,
+                arg.resource ? arg.resource.id : '(no resource)'
+            );
+        }
+                });
+
+        calendar.render();
+            });
+
+    </script>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+        <h1>Room Color Mappings:</h1>
+        <hr>
+        <div class="color-row">
+            {% for resource in resources %}
+            <p>{{ resource.title }}:
+            <div id="show-color" style="background-color: {{ resource.eventColor }};">
+                <a style="display: block; height: 100%; width: 100%;" href="{% url 'ResourceDetail' pk=resource.id %}"></a>
+            </div>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id='calendar'></div>
+{% endblock content %}

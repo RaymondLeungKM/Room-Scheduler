@@ -1,0 +1,21 @@
+{% extends 'shared_schedule/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% block title %}
+<title>Delete Event</title>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <h2>Are you sure you want to delete "{{ object }}"?</h2>
+            <input class="btn btn-danger type="submit" value="Confirm">
+        </form>
+    </div>
+{% endblock content %}
+    

@@ -1,0 +1,21 @@
+{% extends 'shared_schedule/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Resource Details</title>
+{% endblock %}
+
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Resource Details</h1>
+            <h6>Resource Title: {{ Resource_details.title }}</h6>
+            <h6>Room ID: {{ Resource_details.id }}</h6>
+            <h6>Event Color: {{ Resource_details.eventColor }}</h6>
+            <div id="show-color" style="background-color: {{ Resource_details.eventColor }}"></div>
+            <br>
+            <a class="btn btn-warning" href="{% url 'ResourceUpdate' pk=Resource_details.id %}">Update</a>
+        </div>
+    </div>
+{% endblock content %}
