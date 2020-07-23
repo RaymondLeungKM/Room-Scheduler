@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'colorfield',
     'bootstrap4',
     'shared_schedule',
+    'dj_static',
 ]
 
 MIDDLEWARE = [
