@@ -10,7 +10,7 @@ from bootstrap_datepicker_plus import DateTimePickerInput
 # Create your views here.
 def SharedSch(request):
 	all_events = Event.objects.all()
-	all_resources = Resource.objects.all().orderby('id')
+	all_resources = Resource.objects.all().order_by('id')
 
 	context = {"events":all_events, "resources":all_resources}
 
