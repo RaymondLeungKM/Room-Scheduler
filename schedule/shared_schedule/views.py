@@ -40,7 +40,7 @@ class EventUpdate(SuccessMessageMixin, UpdateView):
 	model = Event
 	fields = '__all__'
 	template_name_suffix = '_update_form'
-	success_message = "Event %(title)s added successfully!"
+	success_message = "Event %(title)s updated successfully!"
 	# success_url = '/'
 
 	def get_form(self):
@@ -70,15 +70,17 @@ class EventDelete(SuccessMessageMixin, DeleteView):
 
 
 # Resource Views
-class ResourceCreate(CreateView):
+class ResourceCreate(SuccessMessageMixin, CreateView):
 	model = Resource
 	fields = '__all__'
+	success_message = "Resource: %(title)s added successfully!"
 
 
-class ResourceUpdate(UpdateView):
+class ResourceUpdate( SuccessMessageMixin, UpdateView):
 	model = Resource
 	fields = '__all__'
 	template_name_suffix = '_update_form'
+	success_message = "Resource: %(title)s updated successfully!"
 	# success_url = '/'
 
 
