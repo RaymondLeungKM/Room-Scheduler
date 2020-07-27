@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from .models import Event, Resource
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from bootstrap_datepicker_plus import DateTimePickerInput
 
 # Create your views here.
@@ -23,9 +25,10 @@ def vSharedSch(request):
 
 	return render(request, 'shared_schedule/vcalendar.html', context)
 
-class EventCreate(CreateView):
+class EventCreate(SuccessMessageMixin, CreateView):
 	model = Event
 	fields = '__all__'
+	success_message = "Event %(title)s added successfully!"
 
 	def get_form(self):
 		form = super().get_form()
@@ -33,10 +36,11 @@ class EventCreate(CreateView):
 		form.fields['end'].widget = DateTimePickerInput()
 		return form
 
-class EventUpdate(UpdateView):
+class EventUpdate(SuccessMessageMixin, UpdateView):
 	model = Event
 	fields = '__all__'
 	template_name_suffix = '_update_form'
+	success_message = "Event %(title)s added successfully!"
 	# success_url = '/'
 
 	def get_form(self):
@@ -54,9 +58,15 @@ class EventDetail(DetailView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class EventDelete(DeleteView):
+class EventDelete(SuccessMessageMixin, DeleteView):
 	model = Event
 	success_url = reverse_lazy('sharedSch')
+	success_message = "Event %(title)s deleted successfully."
+
+	def delete(self, request, *args, **kwargs):
+		obj = self.get_object()
+		messages.success(self.request, self.success_message % obj.__dict__)
+		return super(EventDelete, self).delete(request, *args, **kwargs)
 
 
 # Resource Views
