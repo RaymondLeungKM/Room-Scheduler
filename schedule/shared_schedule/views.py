@@ -19,7 +19,7 @@ def SharedSch(request):
 
 def vSharedSch(request):
 	all_events = Event.objects.all()
-	all_resources = Resource.objects.all()
+	all_resources = Resource.objects.all().order_by('id')
 
 	context = {"events": all_events, "resources": all_resources}
 
